@@ -1,0 +1,119 @@
+\documentclass[../../Thesis.tex]{subfiles}
+
+% “ ”
+\begin{document}
+	
+	\subsection{Fault Detection and Diagnosis}
+		Fault detection and diagnosis (FDD) arises from the need to facilitate system recoveries after agent faults, increase the availability of the system, and reduce potential losses of resources. In the domain of multirobot systems, where agents interact with each other or even with human agents, faults have the potential to threaten the safety of the robot system itself and its surroundings \cite{Jin-Ho1999}. 
+		FDD in swarm robotics spaces over different levels of analysis: it is possible to examine it from the point of view of every single agent and all its components or as the whole swarm in its entirety. The difficulty of detecting faults may change depending on the kind of anomaly or task considered. Detecting a robot that is not communicating with its neighbors but behaves correctly may quite challenging. If a robot battery fails, this anomaly is quite easy to detect because it would imply a complete physical stop of the agent. \\
+		FDD approaches can be partitioned into three subcategories: knowledge-based, model-based, and data-driven \cite{Khalastchi2018}.  Knowledge-based methods use previously known faults and behaviors to recognize predefined known anomalies and diagnoses. Model-based methods use knowledge of the internal system functioning to simulate the agent behavior and detect any anomaly separating from the nominal functioning \cite{Bader2017}. The data-driven approach exploits the advantage of being model-free and not requiring any previous knowledge of the system's internal functioning.
+
+		\subsubsection{Faults}
+			Winfield and Nembrini \cite{Winfield2006} list a series of possible internal hazards that can appear in individual robots. Table \ref{tab:fault_list} lists a group of possible individual robot hazards.
+			\begin{table}
+				\centering
+				\begin{tabular}{|l|l|}
+					\hline
+					\rowcolor{bluepoli!40}
+					\multicolumn{1}{|c|}{\textbf{Harzard}} & \textbf{Description} \\ 
+					\hline
+					$H_1$ & Motor failure \\
+					$H_2$ & Communication failure \\
+					$H_3$ & Avoidance sensor(s) failure \\
+					$H_4$ & Beacon sensor failure \\
+					$H_5$ & Control system failure \\
+					$H_6$ & All system failure \\
+					\hline
+				\end{tabular}
+				\caption{Internal hazards for a single bot.}
+				\label{tab:fault_list}
+			\end{table}
+			Hazard $H_1$, motor failure, covers the condition of a mechanical failure in the wheels actuation motors making the robot unable to move at all or move only on the spot. This kind of fault can either be trivial or not depending on the task under execution. \\
+			Hazard $H_2$, communications failure, consists in the malfunctioning of one or a small number of mobile robots' communications network subsystems. This fault implies the disconnection of one agent or more from the swarm. \\
+			Hazard $H_3$, avoidance sensor(s) failure,  intuitively identifies the malfunctioning of one or more avoidance sensors. This fault is not harmful in most experimental environments. \\
+			Hazard $H_4$, beacon sensor failure, refers to the malfunctioning of the sensor in charge of identifying other agents' beacons. \\
+			Hazard $H_5$, control system failure, is difficult to characterize and to identify. With control system failure we identify a malfunctioning in the control software, this can induce the agent to abnormal movements like indefinitely going forward or turning on the spot. \\
+			Hazard $H_6$, total system failure, will render the robot stationary and inactive. While this fault is the most serious, as counterintuitive it might be, it is instead the most benign. \\
+		
+		\subsubsection{Features} 
+	 		In this work, by feature, we intend the measurable properties or characteristics of the phenomenon under analysis. Features have the role of embedding the object under consideration in an $d$-dimensional space with values that can be numerical or categorical. The complete list of features we have used can be seen in Table \ref{tab:feature_list}. 
+	 		From \cite{LiXingyan2007}, we can see that the coordinates value features together with the robot speed has been used to detect physical and logic faults in two robots pushing a box.\\
+	 		Khaldi et al.  \cite{Khaldi2017} introduces the right and left wheel speed, the average mean distance error (AMDE), and the group speed to monitor a virtual viscoelastic model (VVC). They have inspired the overall speed of the agent, the neighbors' average distance, and the swarm speed, respectively.\\
+	 		Neighbors count has been used in \cite{Tarapore2017} for a decentralized fault detection system.\\
+	 		Wei et al. \cite{Wei2017} introduce the metrics for flocking behavior that suggest:
+	 		\begin{itemize}
+	 			\item “ The agents of the swarm should always face approximately the same direction ”, that suggested we analyze the direction of each agent.
+	 			\item “ The agent should remain close to each other ”, meaning the average distance from all the other agents can enclose insightful information.
+	 		\end{itemize}
+	 		Khalastchi et al. \cite{Khalastchi2015} present an online data-driven anomaly detection approach with a sliding window technique to meet the challenge of detecting dynamically correlated attributes. \\	 		
+	 		
+	 \subsection{Machine Learning Techniques for Fault Detection}
+	 	
+	 	\subsubsection{Data-Driven Fault Detection}
+	 		Data-driven approaches can be divided into statistical approaches and machine learning approaches \cite{Khalastchi2018}.  Machine learning approaches use the most various techniques to build models that are able to distinguish between fault and nominal behaviors. Among these techniques, we can find neural networks integrated with adaptive quasi-continuous second-order sliding mode controller \cite{MienVan2015} or deep learning minimally supervised methods \cite{Azzalini2021}. \\
+	 		Further subdivision over data-driven methods is between univariate and multivariate time series. Bl{\'{a}}zquez{-}Garc{\'{\i}}a et al. \cite{Balzquez2020} propose a definition for univariate and multivariate time series:
+	 		\begin{definition}
+	 			A univariate time series $X = \lbrace x_t \rbrace_{x \in T}$ is an ordered set of real-valued observations, where each observation is recorded at a specific time $t \in T \subseteq \mathbb{Z}^+$.
+	 		\end{definition}
+	 		\begin{definition}
+	 			A multivariate time series $X = \lbrace \mathbf{x_t} \rbrace_{t \in T}$ is defined as an ordered set of $k$-dimensional vectors, each of which is recorded at a specific time $t \in T \subseteq \mathbb{Z}^+$ and consists of $k$ real-valued observations,  $\mathbf{x_t} = \left( x_{1,t}, x_{2, t}, \dots, x_{k, t} \right)$.
+	 		\end{definition}
+	 		It is assumed that each observation $x_t$ is a realized value of a certain random variable $X_t$. \\
+	 		Multivariate time series are preferred to univariate approaches thanks to their ability to capture the context in which the data is collected. 
+	 		In our work, we adopt a multivariate supervised data-driven approach based on fault injection during simulation execution.  		
+			
+	 	\subsection{Decision Trees}
+	 		Decision trees are a non-parametric supervised learning method used for classification and regression. Classification and Regression Trees (CART) \cite{BreFriOlsSto84a} is considered to be the algorithm that regenerated interest in the subject of decision trees \cite{Loh2011}. The goal of a decision tree is to partition the source set into subsets based on each internal node splitting rule.  Decision trees are built following decision tree inducers algorithms \cite{Rokach2005}. Heuristics methods are required to bypass the challenges presented by decision trees, they can be divided into top-down and bottom-up, with the first being the most developed in the literature. 
+
+	 	\subsection{Ensemble Methods}
+	 		Gradient boosting exploits the simplicity of multiple short decision trees to iteratively learn from its previous errors. This approach is part of the ensemble methods and represents the strongest characteristic of gradient boosting. 
+	 		Ensemble methods exploit several base estimators to increase generalizability and robustness concerning a single estimator.  These techniques are divided into averaging methods and boosting methods. The latter consists in multiple simple estimators that are trained sequentially on different sections of the dataset. These techniques aim at lowering the bias of the combined estimator and building a powerful ensemble of estimators \cite{Freund1997}. 
+	 			 		
+	 		\subsubsection{AdaBoost Algorithm}
+		 		The main idea behind AdaBoost is to have a “dream team” of classifiers taken from a large pool of classifiers \cite{Rojas2009}.  For a given pattern $p_i$ each expert classifier $k_j$ can emit an opinion $k_j(p_i) \in \lbrace -1, 1 \rbrace$ and the final decision of the committee $K$ of experts is $sign(C(x_i))$, the sign of the weighted sum of experts opinions, where:
+		 		\begin{itemize}
+		 			\item $C(p_i) = \alpha_1 k_1 (p_i) + \alpha_2 k_2 (p_i) + \dots + \alpha_n k_n (p_i)$.
+		 			\item $k_1, k_2, \dots, k_n$ denote the $n$ experts selected from the pool of classifiers.
+		 			\item $\alpha_1, \alpha_2, \dots, \alpha_n$ are constant and represent the weights of each expert classifiers in the committee.
+		 		\end{itemize}
+		 		The classifiers choice is made by testing them in the pool of classifiers using a training set $T$ of $N$ multidimensional data points $p_i$. For each point $p_i$ we have a label $y_i = 1$ or $y_i = -1$. Classifiers are ranked according to an exponential loss function cost: 
+		 		\begin{itemize}
+		 			\item $e^{-\beta}$ for each success.
+		 			\item $e^{\beta}$ for each fail.
+		 		\end{itemize}
+		 		It is required to have $\beta > 0$ so that whenever a classifier fails it gets more penalized than a success.\\
+		 		The main idea of AdaBoost is to systematically proceed on extracting one classifier from the pool at each iteration, the goal is to draft the best pool of classifiers by the end of the procedure. In the beginning, all data points have the same weight. As the algorithm proceeds, the data points where the classifiers perform badly are assigned larger and larger weights. The drafting aims at selecting new classifiers that can help on the samples that are misclassified from the members of the committee.\\
+		 		To explain the ranking of classifiers we have to imagine a pool with already $m-1$ classifiers in it, at the $m$-th iteration we have to select the next classifier. The linear combination of classifiers is currently:
+		 			\[C_{(m-1)} (p_i) = \alpha_1 k_1 (p_i) + \alpha_2 k_2 (p_i) + \dots + \alpha_{m-1} k_{(m-1)} (p_i)\]
+
+	 	\subsection{Gradient Boosting}
+	 		The gradient boosting model is rather old but it is founded on simple concepts and can achieve promising results thanks to its robustness to overfitting and its ability on handling unbalanced data.\\
+	 		 Gradient boosting is based on the concept of decision trees and the AdaBoost algorithm with some modifications. AdaBoost works by iteratively drafting new classifiers and weighting their output based on their performance on misclassified data. Gradient boosting starts with a single trivial classifier and then iteratively builds classifiers able to predict the errors left from their predecessor. The classifiers built after the first one are weighted by the learning rate, this allows the model to slowly reach the lower values of the loss function.
+	 		 Algorithm \ref{alg:gradient_tree_boosting} is the generic gradient tree-boosting algorithm as stated in \cite{Hastie2009}.
+	 		 \begin{algorithm}[H]
+	 		 	\caption{Gradient Tree Boosting Algorithm.}
+	 		 	\label{alg:gradient_tree_boosting}
+			    	\begin{algorithmic}[1]
+			    	\STATE Initialize $f_0 (x) = \arg \min_\gamma \sum_{i=1}^N L(y_i, \gamma)$
+			    	\FOR{$m=1$ to $M$}
+			    		\FOR{$i=1$ to $N$}
+				    		\STATE{Compute $r_{i,m} = - \left[ 
+				    				\frac{\delta L(y_i, f(x_i))}{\delta f(x_i)}
+				    			\right]_{f=f_{m-1}}$.}
+				    	\ENDFOR
+			    		\STATE{Fit a regressor tree to the targets $r_{i,m}$ giving terminal regions $R_{j,m}$, $j=1,2,\dots, J_m$.}
+			    		\FOR{$j=1,2,\dots,J_m$}
+			    			\STATE{Compute $\gamma_{j,m} = \arg \min\limits_{\gamma} \sum\limits_{x_i \in R_{j,m}} L(y_i, f_{m-1}(x_i) + \gamma)$.}
+			    		\ENDFOR
+			    		\STATE{Update $f_m(x) = f_{m-1}(x) + \nu \sum_{j=1}^{J_m} \gamma_{j,m} I(x \in R_{j,m})$.}
+			    	\ENDFOR
+			    	\STATE{Output $\hat{f}(x) = f_M(x)$}
+			    	\end{algorithmic}
+			\end{algorithm}
+ 		
+ 		\subsection{Feature Importance}
+ 			Despite its simplicity, it is quite difficult to interpret the real decision-making behind gradient boosting. To interpret the execution of the algorithms it is useful to know the choices made during the training phase. Since it would be bothersome to control each estimator, we use the permutation importance of features introduced in \cite{Breiman2001}. Breiman proposes to use internal out-of-bag estimates and rerun the algorithm using only selected variables.
+ 			Consider a dataset with $M$ input variables. At the end of the training phase, the values of the $m$-th feature in the left out data are randomly permuted and the trained model is evaluated on the data with shuffled values. This is repeated for each feature $m = 1, 2, \dots, M$. At the end of the run, each model evaluates out-of-bag data $\mathbf{x}_n$. The plurality of votes from each classifier for $\mathbf{x}_n$ with the $m$-th value shuffled is compared with the true class label of $\mathbf{x}_n$ to give a misclassification rate. In the end, we obtain the percent increase in misclassification rate compared to the out-of-bag with intact variables.
+ 			In our approach we used the \verb|permutation_importance| implemented in the \verb|scikit-learn| library \cite{sklearn_api}. From their documentation: “permutation feature importance is defined to be the decrease in a model score when a single feature value is randomly shuffled”. Permutation feature importance can show more realistic results since it does not show bias towards numerical features and it is independent from the training set.
+ 		
+\end{document}
